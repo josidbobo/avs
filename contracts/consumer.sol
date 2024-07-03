@@ -1,5 +1,5 @@
 // SPDX-License-identifier: MIT
-pragma solidity 0.8.9;
+pragma solidity 0.8.21;
 
 import './interfaces/tvlFeedInterface.sol';
 
@@ -18,7 +18,7 @@ contract Consumer {
         currentTvl = TVLInterface(_currentTVL);
     }
 
-    function calculateYield (uint _amount) internal {
+    function calculateYield (uint _amount) internal view {
         uint tvl = currentTvl.getTVL();
 
         // Any other logic 

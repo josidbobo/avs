@@ -1,6 +1,6 @@
-import { HardhatUserConfig } from "hardhat/config";
+import { HardhatUserConfig, } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "dotenv";
+require('dotenv').config();
 
 const config: HardhatUserConfig = {
   defaultNetwork: "m1",
@@ -14,7 +14,7 @@ const config: HardhatUserConfig = {
     }
   },
   solidity: {
-    version: "0.8.9",
+    version: "0.8.21",
     settings: {
       optimizer: {
         enabled: true,

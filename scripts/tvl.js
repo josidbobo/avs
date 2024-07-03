@@ -1,7 +1,7 @@
 const ethers = require('ethers');
 
 // JSON of the compiled oracle contract
-const TvlFeed = require('./TvlFeed.json');
+const TvlFeed = require('../artifacts/contracts/oracle.sol/TVLFeed.json');
 
 // Address of the deployed oracle contract
 const TvlFeedAddress = '0x';
@@ -14,7 +14,20 @@ function getTVLOffchain() {
     return axios.get('https://api.eigenexplorer.com/metrics/tvl');
 }
 
+async function deployOracle() {
+    const factory = new ethers.ContractFactory(TvlFeed, '0x');
+
+    // If your contract requires constructor args, you can specify them here
+    const contract = await factory.deploy();
+    contract.deployed();
+    TvlFeedAddress = contract.address;
+
+    console.log(contract.address);
+    console.log(contract.deployTransaction);
+}
+
 async function main() {
+    await deployOracle();
     // Get instances of provider and signer to be able to interact with the blockchain
     const provider = new ethers.providers.JsonRpcProvider(BLOCKCHAIN_NODE_URL);
     const signer = new ethers.Wallet(PRIVATE_KEY, provider);
@@ -24,6 +37,7 @@ async function main() {
     
     // Retrieve data: it can be an API call, database query, etc.
     const offChainResult = await getTVLOffchain();
+    console.log(offChainResult);
 
     // Create setData transaction
     const sendDataTx = await TvlFeedContract.setData(offChainResult);
