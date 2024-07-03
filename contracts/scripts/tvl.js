@@ -1,17 +1,17 @@
 const ethers = require('ethers');
 
-// JSON of the compiled TicketsFeed contract
+// JSON of the compiled oracle contract
 const TvlFeed = require('./TvlFeed.json');
 
-// Address of the deployed TicketsFeed oracle contract
+// Address of the deployed oracle contract
 const TvlFeedAddress = '0x';
 
 const BLOCKCHAIN_NODE_URL = 'https://mevm.devnet.m1.movementlabs.xyz';
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
-// The logic for calculating the number of sold tickets
+// The offchain function for calculating the number
 function getTVLOffchain() {
-    return 102;
+    return axios.get('https://api.eigenexplorer.com/metrics/tvl');
 }
 
 async function main() {
@@ -23,7 +23,7 @@ async function main() {
     const TvlFeedContract = new ethers.Contract(TicketsFeedAddress, TicketsFeed.abi, signer);
     
     // Retrieve data: it can be an API call, database query, etc.
-    const offChainResult = getTVLOffchain();
+    const offChainResult = await getTVLOffchain();
 
     // Create setData transaction
     const sendDataTx = await TvlFeedContract.setData(offChainResult);

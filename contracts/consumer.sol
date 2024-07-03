@@ -14,6 +14,10 @@ contract Consumer {
         return currentTvl.getTVL();
     }
 
+    function updateFeed(address _currentTVL) public{
+        currentTvl = TVLInterface(_currentTVL);
+    }
+
     function calculateYield (uint _amount) internal {
         uint tvl = currentTvl.getTVL();
 
