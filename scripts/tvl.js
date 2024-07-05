@@ -4,7 +4,7 @@ const ethers = require('ethers');
 const TvlFeed = require('../artifacts/contracts/oracle.sol/TVLFeed.json');
 
 // Address of the deployed oracle contract
-const TvlFeedAddress = '0x';
+let TvlFeedAddress = '0x';
 
 const BLOCKCHAIN_NODE_URL = 'https://mevm.devnet.m1.movementlabs.xyz';
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
@@ -15,21 +15,21 @@ function getTVLOffchain() {
 }
 
 async function deployOracle() {
-    const factory = new ethers.ContractFactory(TvlFeed, '0x');
+    //const signer = await ethers.si;
+    const factory = new ethers.ContractFactory(TvlFeed.abi, TvlFeed.bytecode);
 
     // If your contract requires constructor args, you can specify them here
     const contract = await factory.deploy();
-    contract.deployed();
     TvlFeedAddress = contract.address;
 
     console.log(contract.address);
-    console.log(contract.deployTransaction);
+    //console.log(contract.deployTransaction);
 }
 
 async function main() {
     await deployOracle();
     // Get instances of provider and signer to be able to interact with the blockchain
-    const provider = new ethers.providers.JsonRpcProvider(BLOCKCHAIN_NODE_URL);
+    const provider = new ethers.providers.JsonRpcProvider(BLOCKCHAIN_NODE_URL, m1);
     const signer = new ethers.Wallet(PRIVATE_KEY, provider);
 
     // Create an instance of deployed oracle contract
